@@ -1,3 +1,4 @@
+# Test for proper structure with coordinating conjunctions
 ( id=John.1.1 )
 	pc Ἐν ἀρχῇ
 	v ἦν

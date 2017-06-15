@@ -1,3 +1,5 @@
+# Test for proper start / end of sentences
+# Test for proper osisId attribution for each sentence / word
 (id=1Pet.1.1)
 s Πέτρος ἀπόστολος Ἰησοῦ Χριστοῦ 
 io ἐκλεκτοῖς παρεπιδήμοις Διασπορᾶς Πόντου, Γαλατίας, Καππαδοκίας, Ἀσίας, καὶ Βιθυνίας, 
