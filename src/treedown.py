@@ -1,24 +1,8 @@
 # -*- coding: UTF-8
-
 #  Treedown utility
 #
 #  Converts Treedown to bracket notation or Lowfat XML, 
 #  might also support HTML for literate programming.
-#
-#  Pass-through for all material in multi-line quotes?
-#
-#  Parsing technique:
-#  http://effbot.org/zone/simple-top-down-parsing.htm
-#
-#  Scanning technique:
-#  https://deplinenoise.wordpress.com/2012/01/04/python-tip-regex-based-tokenizer/
-# 
-#  Python Regular Expressions
-#  https://docs.python.org/3/library/re.html
-#  https://docs.python.org/2/howto/regex.html
-# 
-#  Python tokenizer:
-#  https://github.com/python/cpython/blob/master/Lib/tokenize.py
 
 import re
 import sys
@@ -36,11 +20,6 @@ argparser.add_argument('input', metavar='infile', type=str, help='input file (in
 args = argparser.parse_args()
 
 # Milestones
-#
-# [x] simple arg parser
-# [x] reads lines from a file
-# [x] tokenizes (emit with some delimiter)
-# [x] tokenizer more accurately reflects Treedown language
 # [ ] brackets
 # [ ] XML
 
@@ -93,39 +72,41 @@ def indent(tokens):
 class Emitter:
   level = 0      # 0 = not in sentence, 1 = top level in sentence, etc.
 
+
   def __init__(self, type):   #  type = 'brackets', 'xml', or 'normalize'
       self.type = type
 
-  def leftbrackets(self, tokens):
+
+  def emit(self, line):
+    tokens = scanner.findall(line) 
+    if blank_line(tokens):
+      return
+
     newlevel = indent(tokens)
+
     if newlevel > 0 and self.level == 0: # beginning of sentence
         print "[S "  # 0 -> 1
-    for i in range(1, newlevel):
-      print "[ "
-    print("left: ",self.level,"=>",newlevel)
+        for i in range(self.level + 1, newlevel):
+          print "[ " 
+    else:
+        for i in range(self.level, newlevel):
+          print "[ "  
+
+    for i in range(newlevel, self.level):
+      print "]"
+
+    print "["+line.strip()+"]"
+
+
     self.level = newlevel   
 
-  def rightbrackets(self, tokens):
-    newlevel = indent(tokens)
-    if newlevel < self.level:
-        for i in range(newlevel, self.level):
-          print "]"
-    print("right: ",self.level,"=>",newlevel)
-    self.level = newlevel
 
-  def text(self, tokens):
-    if blank_line(tokens) == False:
-      print ""
-
-  def line(self, tokens):
-    self.leftbrackets(tokens)
-    self.text(tokens) 
-    self.rightbrackets(tokens)
-
+  def cleanup(self):
+    for i in range(0, self.level):
+      print "]"
 
 f = codecs.open(args.input, encoding='utf-8', mode='r')
 e = Emitter('brackets')
 for line in f:
-    print line
-    tokens = scanner.findall(line)
-    e.line(tokens)
+    e.emit(line)
+e.cleanup()
