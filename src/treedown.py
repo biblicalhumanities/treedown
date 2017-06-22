@@ -86,11 +86,11 @@ class Emitter:
 
     if newlevel > 0 and self.level == 0: # beginning of sentence
         print "[S "  # 0 -> 1
-        for i in range(self.level + 1, newlevel):
-          print "[ " 
+        lbracks = range(self.level + 1, newlevel)
     else:
-        for i in range(self.level, newlevel):
-          print "[ "  
+        lbracks = range(self.level, newlevel)
+    for i in lbracks:
+        print "[ " 
 
     for i in range(newlevel, self.level):
       print "]"
