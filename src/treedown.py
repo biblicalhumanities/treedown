@@ -172,6 +172,8 @@ argparser.add_argument("-b", "--brackets", help="produce bracket notation instea
 args = argparser.parse_args()
 
 f = codecs.open(args.input, encoding='utf-8', mode='r')
+sys.stdout = codecs.getwriter('utf8')(sys.stdout)
+
 if args.brackets:
     lp = LineParser(BracketEmitter())
 else:
