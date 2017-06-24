@@ -71,12 +71,8 @@ class LineParser:
     level = 0      # 0 = not in sentence, 1 = top level in sentence, etc.
     emitter = None
 
-    def __init__(self, type):   #  type = 'brackets', 'xml', or 'normalize'
-        self.type = type
-        if type == "brackets":
-            self.emitter = BracketEmitter()
-        elif type == "xml":
-            self.emitter = XMLEmitter()
+    def __init__(self, emitter):   #  type = 'brackets', 'xml', or 'normalize'
+        self.emitter = emitter
 
     def milestone(self, tokens):
         return False
@@ -164,7 +160,7 @@ class LineParser:
                 self.emitter.unexpected(t[7])
 
         if label == True:
-                self.emitter.rightbracket()
+            self.emitter.rightbracket()
 
     def cleanup(self):
         for i in range(0, self.level):
@@ -177,9 +173,9 @@ args = argparser.parse_args()
 
 f = codecs.open(args.input, encoding='utf-8', mode='r')
 if args.brackets:
-    lp = LineParser('brackets')
+    lp = LineParser(BracketEmitter())
 else:
-    lp = LineParser('xml')
+    lp = LineParser(XMLEmitter())
 for line in f:
     lp.process(line)
 lp.cleanup() 
