@@ -22,48 +22,48 @@ scanner = re.compile(r'''
 
 class BracketEmitter:
     def labeled_leftbracket(self, label):
-        print "["+str(label)
+        print("["+str(label)+" ")
 
     def leftbracket(self):
-        print "["
+        print("[ ")
 
     def rightbracket(self):
-        print "]"
+        print(" ]")
 
     def word(self, string):
-        print string
+        print(string)
 
     def punc(self, string):
-        print string
+        print(string)
 
     def whitespace(self, string):
-        print string
+        print(string)
 
     def unexpected(self, string):
-        print string
+        print(string)
 
 
 class XMLEmitter:
     def labeled_leftbracket(self, label):
-        print '<wg role="'+str(label)+'">'
+        print('<wg role="'+str(label)+'">')
 
     def leftbracket(self):
-        print "<wg>"
+        print("<wg>")
 
     def rightbracket(self):
-        print "</wg>"
+        print("</wg>")
 
     def word(self, string):
-        print "<w>" + string + "</w>"
+        print("<w>" + string + "</w>")
 
     def punc(self, string):
-        print "<pc>" + string + "</pc>"
+        print("<pc>" + string + "</pc>")
 
     def whitespace(self, string):
         return
 
     def unexpected(self, string):
-        print "<error>" + string + "</error>"
+        print("<error>" + string + "</error>")
 
 
 class LineParser:
