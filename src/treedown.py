@@ -3,6 +3,7 @@
 #
 #  Converts Treedown to bracket notation or Lowfat XML.
 
+from __future__ import print_function
 import re
 import sys
 import argparse
@@ -22,25 +23,25 @@ scanner = re.compile(r'''
 
 class BracketEmitter:
     def labeled_leftbracket(self, label):
-        print("["+str(label)+" ")
+        print("["+str(label), end=" ")
 
     def leftbracket(self):
-        print("[ ")
+        print("[ ", end="")
 
     def rightbracket(self):
-        print(" ]")
+        print(" ]", end="")
 
     def word(self, string):
-        print(string)
+        print(string, end="")
 
     def punc(self, string):
-        print(string)
+        print(string, end="")
 
     def whitespace(self, string):
-        print(string)
+        print(string, end="")
 
     def unexpected(self, string):
-        print(string)
+        print(string, end="")
 
 
 class XMLEmitter:
