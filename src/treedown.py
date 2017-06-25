@@ -22,6 +22,9 @@ scanner = re.compile(r'''
 
 
 class BracketEmitter:
+    def start_sentence(self):
+        print("[S")
+
     def labeled_leftbracket(self, label):
         print("["+str(label), end=" ")
 
@@ -45,6 +48,9 @@ class BracketEmitter:
 
 
 class XMLEmitter:
+    def start_sentence(self):
+        print('<wg role="S">')
+
     def labeled_leftbracket(self, label):
         print('<wg role="'+str(label)+'">')
 
@@ -124,7 +130,7 @@ class LineParser:
         newlevel = self.indentation(tokens)
 
         if newlevel > 0 and self.level == 0:  # beginning of sentence
-            self.emitter.labeled_leftbracket("S")
+            self.emitter.start_sentence()
             lbracks = range(self.level + 1, newlevel)
         else:
             lbracks = range(self.level, newlevel)
