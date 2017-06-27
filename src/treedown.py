@@ -11,7 +11,7 @@ import codecs
 import logging
 from string import Template
 
-logging.basicConfig(filename='treedown.log',level=logging.DEBUG)
+logging.basicConfig(filename='treedown.log', level=logging.DEBUG)
 
 scanner = re.compile(r'''
     ^(\s+) |                     # left-hand whitespace
@@ -50,10 +50,7 @@ class BracketEmitter:
     def unexpected(self, string):
         print(string, end="")
 
-    def fakebracket(self):
-        print(">",end="")
-
-
+        
 class XMLEmitter:
     def start_sentence(self):
         print('<wg role="S">')
@@ -78,10 +75,6 @@ class XMLEmitter:
 
     def unexpected(self, string):
         print("<error>" + string + "</error>")
-
-    def fakebracket(self):
-        print("</fake>",end="")
-
 
 class LineParser:
     level = 0                # 0 = not in sentence, 1 = top level in sentence, etc.
