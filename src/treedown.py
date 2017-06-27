@@ -8,10 +8,14 @@ import re
 import sys
 import argparse
 import codecs
+import logging
+from string import Template
+
+logging.basicConfig(filename='treedown.log',level=logging.DEBUG)
 
 scanner = re.compile(r'''
     ^(\s+) |                     # left-hand whitespace
-    ([\+\:sv]|pc|od|oi) |        # keywords
+    ([\+\:svo]|pc|od|oi|v\.part|v\.inf) |        # keywords
     ([-]+) |                     # dashes - keywords or punctuation
     (\#.+)  |                    # comments
     (\w+) |                      # words
@@ -46,6 +50,9 @@ class BracketEmitter:
     def unexpected(self, string):
         print(string, end="")
 
+    def fakebracket(self):
+        print(">",end="")
+
 
 class XMLEmitter:
     def start_sentence(self):
@@ -72,9 +79,13 @@ class XMLEmitter:
     def unexpected(self, string):
         print("<error>" + string + "</error>")
 
+    def fakebracket(self):
+        print("</fake>",end="")
+
 
 class LineParser:
-    level = 0      # 0 = not in sentence, 1 = top level in sentence, etc.
+    level = 0                # 0 = not in sentence, 1 = top level in sentence, etc.
+    label_levels = []        # stack: levels where labels were found
     emitter = None
 
     def __init__(self, emitter):   # type = 'brackets', 'xml', or 'normalize'
@@ -84,6 +95,7 @@ class LineParser:
         return False
 
     def comment_line(self, tokens):
+        
         if len(tokens) == 1 and tokens[0][3] != "":
             return True
         elif len(tokens) == 2 and tokens[1][3] != "":
@@ -92,6 +104,7 @@ class LineParser:
             return False
 
     def blank_line(self, tokens):
+        
         if tokens is None:
             return False
         elif tokens == [] or len(tokens) == 1 and tokens[0][0] != "":
@@ -100,6 +113,7 @@ class LineParser:
             return False
 
     def indentation(self, tokens):
+        
         if self.blank_line(tokens):
             level = 0
         elif tokens[0][0] == "":
@@ -118,6 +132,7 @@ class LineParser:
         return level
 
     def process(self, line):
+        
         tokens = scanner.findall(line)
 
         if self.milestone(tokens):
@@ -136,22 +151,32 @@ class LineParser:
             lbracks = range(self.level, newlevel)
         for i in lbracks:
             self.emitter.leftbracket()
+     
+        logging.debug("Line: "+line)
+        dbg = Template('old level: $old, new level: $new, stack: $stack')
+   
+        for label in reversed(self.label_levels):
+            if label >= newlevel:
+                self.emitter.rightbracket()
+                self.label_levels.pop()
 
         for i in range(newlevel, self.level):
             self.emitter.rightbracket()
 
-        self.line_content(tokens)
+        self.line_content(tokens, newlevel)
+
+        logging.debug(dbg.substitute(old=self.level, new=newlevel, stack = self.label_levels))
 
         self.level = newlevel
 
-    def line_content(self, tokens):
-        label = False
+    def line_content(self, tokens, level):
+        
         for t in tokens:
             if t[0] != "":    # indentation
                 continue
-            elif t[1] != "":  # label
+            elif t[1] != "":  # keyword
                 self.emitter.labeled_leftbracket(t[1])
-                label = True
+                self.label_levels.append(level)
             elif t[2] != "":  # dash ... TODO
                 continue
             elif t[3] != "":  # TD comment
@@ -165,10 +190,12 @@ class LineParser:
             elif t[7] != "":  # unexpected
                 self.emitter.unexpected(t[7])
 
-        if label is True:
-            self.emitter.rightbracket()
-
     def cleanup(self):
+        
+        for label in reversed(self.label_levels):
+            self.emitter.rightbracket()
+            self.label_levels.pop()
+
         for i in range(0, self.level):
             self.emitter.rightbracket()
 
