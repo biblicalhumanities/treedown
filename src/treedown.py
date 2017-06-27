@@ -15,7 +15,7 @@ logging.basicConfig(filename='treedown.log', level=logging.DEBUG)
 
 scanner = re.compile(r'''
     ^(\s+) |                     # left-hand whitespace
-    ([\+\:svo]|pc|od|oi|v\.part|v.inf) |        # keywords
+    (v\.part|v.inf|pc|od|oi|[\+\:svo]) |        # keywords
     ([-]+) |                     # dashes - keywords or punctuation
     (\#.+)  |                    # comments
     (\w+) |                      # words
@@ -210,6 +210,7 @@ for line in f:
     lp.process(line)
 lp.cleanup()
 
+# v.inf, v.part
 # Full parsing of line
 # Complete XML structure
 # Add pattern for annotations
