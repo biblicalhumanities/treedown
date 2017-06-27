@@ -15,11 +15,11 @@ logging.basicConfig(filename='treedown.log', level=logging.DEBUG)
 
 scanner = re.compile(r'''
     ^(\s+) |                     # left-hand whitespace
-    ([\+\:svo]|pc|od|oi|v\.part|v\.inf) |        # keywords
+    ([\+\:svo]|pc|od|oi|v\.part|v.inf) |        # keywords
     ([-]+) |                     # dashes - keywords or punctuation
     (\#.+)  |                    # comments
     (\w+) |                      # words
-    ([\.\;\"··\-,]) |            # punctuation - incomplete ".,·;—>·()"
+    ([\.\;\"··\-,’]) |            # punctuation - incomplete ".,·;—>·()"
     (\s+) |                      # generic whitespace
     (.)                          # an error!
 ''', re.DOTALL | re.VERBOSE | re.UNICODE)
@@ -50,7 +50,7 @@ class BracketEmitter:
     def unexpected(self, string):
         print(string, end="")
 
-        
+
 class XMLEmitter:
     def start_sentence(self):
         print('<wg role="S">')
@@ -75,6 +75,7 @@ class XMLEmitter:
 
     def unexpected(self, string):
         print("<error>" + string + "</error>")
+
 
 class LineParser:
     level = 0                # 0 = not in sentence, 1 = top level in sentence, etc.
@@ -158,7 +159,7 @@ class LineParser:
 
         self.line_content(tokens, newlevel)
 
-        logging.debug(dbg.substitute(old=self.level, new=newlevel, stack = self.label_levels))
+        logging.debug(dbg.substitute(old=self.level, new=newlevel, stack=self.label_levels))
 
         self.level = newlevel
 
