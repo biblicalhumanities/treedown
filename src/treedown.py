@@ -14,14 +14,14 @@ from string import Template
 logging.basicConfig(filename='treedown.log', level=logging.DEBUG)
 
 scanner = re.compile(r'''
-    ^(\s+) |                     # left-hand whitespace
-    (v\.part|v.inf|pc|od|oi|[\+\:svo]) |        # keywords
-    ([-]+) |                     # dashes - keywords or punctuation
-    (\#.+)  |                    # comments
-    (\w+) |                      # words
-    ([\.\;\"··\-,’]) |            # punctuation - incomplete ".,·;—>·()"
-    (\s+) |                      # generic whitespace
-    (.)                          # an error!
+   ^(?P<leftspace>\s+) | 
+    (?P<keyword>v\.part|v.inf|cj|pc|od|oi|[\+\:svo]) |
+    (?P<dashes>[-]+) |
+    (?P<comment>\#.+)  | 
+    (?P<word>\w+) | 
+    (?P<punct>[\.\;\"··\-,’]) |            # incomplete ".,·;—>·()"
+    (?P<whitespace>\s+) | 
+    (?P<error>.) 
 ''', re.DOTALL | re.VERBOSE | re.UNICODE)
 
 
