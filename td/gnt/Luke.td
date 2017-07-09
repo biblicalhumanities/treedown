@@ -26,7 +26,7 @@
                 + ἀπ’ ἀρχῆς 
                 p αὐτόπται καὶ ὑπηρέται 
                 v γενόμενοι  
-                p τοῦ λόγου,    (: treating as a split predicate :)
+                p τοῦ λόγου,    /* treating as a split predicate */
 v ἔδοξε 
 io κἀμοὶ 
 + 

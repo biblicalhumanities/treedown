@@ -6,13 +6,14 @@
 # Creative Commons Attribution-ShareAlike 4.0 International License.
 # http//creativecommons.org/licenses/by-sa/4.0/
 #
-# Note the Treedown language is still being specified, and is subject tod change.
+# Note the Treedown language is still being specified, and is subject to change.
 
 (id=1Pet.1.1)
 s Πέτρος ἀπόστολος Ἰησοῦ Χριστοῦ 
-oi ἐκλεκτοῖς 
+oi 
+    ἐκλεκτοῖς 
     + παρεπιδήμοις Διασπορᾶς Πόντου, Γαλατίας, Καππαδοκίας, Ἀσίας, καὶ Βιθυνίας, 
-(id=1Pet.1.2)
+    (id=1Pet.1.2)
     + κατὰ πρόγνωσιν Θεοῦ Πατρός, 
     + ἐν ἁγιασμῷ Πνεύματος, 
     + εἰς ὑπακοὴν καὶ ῥαντισμὸν αἵματος Ἰησοῦ Χριστοῦ· 
@@ -98,7 +99,7 @@ v ἀγαλλιᾶσθε,
 
 (id=1Pet.1.10)
 + περὶ ἧς σωτηρίας 
-v ἐξεζήτησαν καὶ ἐξηραύνησαν     ( phrase in verb role )
+v ἐξεζήτησαν καὶ ἐξηραύνησαν     # phrase in verb role 
 s προφῆται 
     +
         s οἱ 
@@ -118,7 +119,7 @@ s προφῆται
 + οἷς 
     v ἀπεκαλύφθη 
     od ὅτι 
-        oi οὐχ ἑαυτοῖς ὑμῖν δὲ    ( δὲ    when joining phrases, not clauses ... )
+        oi οὐχ ἑαυτοῖς ὑμῖν δὲ    # δὲ  when joining phrases, not clauses ...
         v διηκόνουν 
         od αὐτά, 
             +

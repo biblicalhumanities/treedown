@@ -1,15 +1,13 @@
-# Test for proper structure with coordinating conjunctions
-( id=John.1.1 )
+# Let's add a comment
+   # and another
 	pc Ἐν ἀρχῇ
 	v ἦν
 	s  ὁ λόγος,
-cj καὶ
+καὶ
 	s ὁ λόγος
 	v ἦν
-	p πρὸς τὸν θεόν,
-cj καὶ
-	pc God
-	v was
-	s the Word
-
-
+	pc πρὸς τὸν θεόν,
+καὶ
+	pc θεὸς
+	v  ἦν
+	s ὁ λόγος.
