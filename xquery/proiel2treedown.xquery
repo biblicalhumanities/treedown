@@ -1,6 +1,12 @@
 declare function local:token($t)
 {
-  <w>{ string($t/@form) }</w>,
+  <w>
+    {
+      attribute role {$t/@relation},
+      attribute id {$t/@id},
+      string($t/@form)
+    }
+  </w>,
   $t/@presentation-after[. != ' '] ! <pc>{string(.)}</pc>
 };
 
@@ -11,7 +17,7 @@ declare function local:unwrap($t, $stok)
   return
     if ($children)
     then 
-      <wg relation="{$t/@relation}">
+      <wg role="{$t/@relation}">
         {
           for $s in $seq
           return 
