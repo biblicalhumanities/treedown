@@ -1,3 +1,9 @@
+declare function local:token($t)
+{
+  <w>{ string($t/@form) }</w>,
+  $t/@presentation-after[. != ' '] ! <pc>{string(.)}</pc>
+};
+
 declare function local:unwrap($t, $stok)
 {
   let $children :=  $stok[@head-id = $t/@id]
@@ -10,19 +16,19 @@ declare function local:unwrap($t, $stok)
           for $s in $seq
           return 
             if ($s is $t)
-            then $t
+            then local:token($t)
             else local:unwrap($s, $stok)
         }
       </wg>
-    else $t
+    else local:token($t)
 };
 
 for $s in //sentence
-let $stok := $s//token
-let $t := $stok[not(@head-id)][1]  (: hack ... get rid of subscript :)
 return 
   <sentence>
-    {
-      local:unwrap($t, $stok)
+    {      
+      let $stok := $s//token
+      for $t in $stok[not(@head-id)]     
+      return local:unwrap($t, $stok)
     }
   </sentence>
