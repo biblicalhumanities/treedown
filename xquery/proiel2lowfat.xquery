@@ -1,6 +1,130 @@
 declare variable $pos := //parts-of-speech;
+declare variable $morph := //morphology;
 
-declare function local:pos($t)
+declare function local:morph-description($tag, $category)
+{
+   $morph/field[@tag=$category]/value[@tag=$tag]/@summary ! string(.)
+};
+
+declare function local:number($morph as xs:string)
+{
+  let $tag := substring($morph,2,1)
+  where $tag != "-"
+  return
+    attribute number {
+      local:morph-description($tag, "number")    
+    }
+};
+
+declare function local:person($morph as xs:string)
+{
+  let $tag := substring($morph,1,1)
+  where $tag != "-"  
+  return
+    attribute person {
+      tokenize(local:morph-description($tag, "person"))[1]   
+    }
+};
+
+declare function local:gender($morph as xs:string)
+{
+  let $tag := substring($morph,6,1)
+  where $tag != "-"  
+  return
+    attribute gender {
+      local:morph-description($tag,"gender")      
+    }  
+};
+
+declare function local:case($morph as xs:string)
+{
+  let $tag := substring($morph,7,1)
+  where $tag != "-"
+  return
+    attribute case {
+      local:morph-description($tag,"case")      
+    }
+};
+
+declare function local:tense($morph as xs:string)
+{
+  let $tag := substring($morph,3,1)
+  where $tag != "-"
+  return
+    attribute tense {
+      local:morph-description($tag,"tense")  
+    }
+};
+
+declare function local:voice($morph as xs:string)
+{
+  let $tag := substring($morph,5,1)
+  where $tag != "-"
+  return  
+    attribute voice {
+      local:morph-description($tag,"voice")    
+    }
+};
+
+declare function local:mood($morph as xs:string)
+{
+  let $tag := substring($morph,4,1)
+  where $tag != "-"
+  return  
+    attribute mood {
+      local:morph-description($tag,"mood")
+    }
+};
+
+declare function local:degree($morph as xs:string)
+{
+  let $tag := substring($morph,8,1)
+  where $tag != "-"
+  return  
+    attribute degree {
+      local:morph-description($tag,"degree")
+    }
+};
+
+declare function local:strength($morph as xs:string)
+{
+  let $tag := substring($morph,9,1)
+  where $tag != "-"
+  return  
+    attribute strength {
+      local:morph-description($tag,"strength")
+    }
+};
+
+declare function local:inflection($morph as xs:string)
+{
+  let $tag := substring($morph,10,1)
+  where $tag != "-"
+  return  
+    attribute inflection {
+      local:morph-description($tag,"inflection")
+    }
+};
+
+declare function local:morphology($t)
+{
+  let $morph := string($t/@morphology)
+  where $morph
+  return (
+    local:number($morph),
+    local:person($morph),
+    local:gender($morph),
+    local:case($morph), 
+    local:tense($morph),
+    local:voice($morph),
+    local:mood($morph),
+    local:degree($morph),
+    local:strength($morph),
+    local:inflection($morph)    
+  )
+};
+
+declare function local:class($t)
 {
   let $description :=  string($pos/value[@tag = $t/@part-of-speech]/@summary)
   let $class :=
@@ -51,8 +175,9 @@ declare function local:token($t)
 {
   <w>
     {
-      local:pos($t),
+      local:class($t),
       attribute role {$t/@relation},
+      local:morphology($t),
       attribute id {$t/@id},
       $t/@head-id ! attribute head-id {$t/@head-id }
     }
