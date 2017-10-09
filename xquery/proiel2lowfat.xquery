@@ -186,7 +186,7 @@ declare function local:token($t)
       string($t/@form)
     }
   </w>,
-  $t/@presentation-after[. != ' '] ! <pc>{normalize-string(.)}</pc>
+  $t/@presentation-after[. != ' '] ! <pc>{normalize-space(.)}</pc>
 };
 
 
