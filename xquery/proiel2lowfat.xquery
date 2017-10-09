@@ -209,12 +209,37 @@ declare function local:unwrap($t, $stok)
     else local:token($t)
 };
 
+declare function local:milestone($ms)
+{
+  let $groups := analyze-string($ms, "(\d+)?(\w+) (\d+)\.(\d+)")//fn:group
+  let $name :=
+    switch ($groups[@nr="2"])
+      case "PHILEM" return "phlm"
+      default return $groups[@nr="2"]
+  let $first :=
+    string-join(($groups[@nr="1"], upper-case(substring($name,1,1)),lower-case(substring($name,2))),"")
+  let $osisId := string-join(($first, $groups[@nr="3"], $groups[@nr="4"]),".")
+  return
+    <milestone unit="verse" id="{$osisId}">{ $osisId }</milestone>    
+};
+
 declare function local:sentence($s)
 {
   <sentence>
     {
       attribute id { $s/@id }
     }  
+    {
+      for $ms in distinct-values($s//@citation-part)
+      return local:milestone($ms)
+    }
+    {
+      <p>
+       {
+         string-join( $s//token ! (@form, @presentation-after), "")
+       }
+      </p>
+    }
     {      
       let $stok := $s//token
       for $t in $stok[not(@head-id)]     
