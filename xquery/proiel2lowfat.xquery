@@ -111,6 +111,7 @@ declare function local:morphology($t)
   let $morph := string($t/@morphology)
   where $morph
   return (
+    $t/@lemma,
     local:number($morph),
     local:person($morph),
     local:gender($morph),
