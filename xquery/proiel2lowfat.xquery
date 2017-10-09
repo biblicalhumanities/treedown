@@ -196,7 +196,7 @@ declare function local:unwrap($t, $stok)
   return
     if ($children)
     then 
-      <wg role="{$t/@relation}">
+      <wg role="{$t/@relation}" head="{$t/@id}">
         {
           for $s in $seq
           return 
