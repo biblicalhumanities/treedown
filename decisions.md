@@ -1,6 +1,6 @@
 #  Asyndeton (Issue [24](https://github.com/biblicalhumanities/treedown/issues/24))
 
-Asyndeton is indicated using ':':
+Asyndeton is indicated using ':'
 
 ```
 s I
