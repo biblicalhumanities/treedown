@@ -1,4 +1,4 @@
-#  Asyndeton (Issue [24](https://github.com/biblicalhumanities/treedown/issues/24)
+#  Asyndeton (Issue [24](https://github.com/biblicalhumanities/treedown/issues/24))
 
 Asyndeton is indicated using ':':
 
